@@ -77,10 +77,10 @@
 				</dependencies> 
 				<configuration>
 					<mutationThreshold>70</mutationThreshold>
-					<output Formats>
-					  <output Format>XML</output Format> 
-					  <output Format>HTML</output Format> 
-				         </output Formats>
+					<outputFormats>
+					  <outputFormat>XML</outputFormat> 
+					  <outputFormat>HTML</outputFormat> 
+				         </outputFormats>
 				</configuration> 
 			</plugin>
 		</plugins>
