@@ -4,6 +4,16 @@ pipeline {
         jdk 'jdk8'
     }
     stages {
+        stage('Build JAR') {
+            steps {
+                  sh "mvn clean install -DskipTests=true"
+            }
+        }
+        stage('Artifacts JAR') {
+            steps {
+                 archiveArtifacts artifacts: 'target/*.jar'
+            }
+        }
         stage('Test') {
             steps {
                   sh "mvn test"
@@ -14,16 +24,6 @@ pipeline {
                     jacoco execPattern: 'target/jacoco.exec'
                         }
                  }
-        }
-        stage('Build JAR') {
-            steps {
-                  sh "mvn clean install -DskipTests=true"
-            }
-        }
-        stage('Artifacts JAR') {
-            steps {
-                 archiveArtifacts artifacts: 'target/*.jar'
-            }
         }
         stage('Build Image'){
             steps {
