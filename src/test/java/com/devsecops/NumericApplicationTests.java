@@ -53,7 +53,7 @@ public class NumericApplicationTests {
     
     @Test 
     public void welcomeMessage() throws Exception { 
-        this.mockMvc.perform(get("/")).andDo(print()).andExpect(status().isok()).andExpect(content().string("Kubernetes DevSecOps"));
+        this.mockMvc.perform(get("/")).andDo(print()).andExpect(status().isOk()).andExpect(content().string("Kubernetes DevSecOps"));
     }
     
 
