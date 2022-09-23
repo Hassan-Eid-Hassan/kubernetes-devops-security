@@ -25,6 +25,16 @@ pipeline {
                         }
                  }
         }
+        stage('Mutation Tests PIT') {
+            steps{ 
+              sh "mvn org.pitest:pitest-maven:mutationCoverage" 
+                 } 
+            post { 
+                always { 
+                    pitmutation mutationStatsFile: '***/target/pit-reports/**/mutations.xml' 
+                        }
+                    }
+        }
         stage('Build Image'){
             steps {
                 sh "docker build -t 192.168.205.130:5000/repository/hassan/java:${BUILD_NUMBER} ."
