@@ -33,8 +33,13 @@ pipeline {
                 always { 
                     pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml' 
                         }
-                    }
+                    }   
         }
+      //  stage('SonarQube - SAST') {
+       //     steps {
+        //          sh "mvn sonar:sonar -Dsonar.projectKey="----" -Dsonar.host.url=http://devsecops-demo.eastus.cloudapp.azure.com:9000 -Dsonar.login="-----""
+         //   }
+       // }
         stage('Build Image'){
             steps {
                 sh "docker build -t 192.168.205.130:5000/repository/hassan/java:${BUILD_NUMBER} ."
