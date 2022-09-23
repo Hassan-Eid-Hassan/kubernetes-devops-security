@@ -58,9 +58,9 @@
 				      <execution>
 					<id>report</id> 
 					 <phase>test</phase>
-					  <goal>report</goal> 
-					   <goals> 
-					   </goals>
+					 <goals> 
+					  <goal>report</goal>   
+					 </goals>
 				       </execution> 
 				</executions> 
 		</plugins>
