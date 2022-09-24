@@ -47,6 +47,16 @@ pipeline {
     //         }
          //   }
        // }
+        stage('Vulnerability Scan Docker'){
+            steps{
+                sh "mvn dependency-check:check"
+            }
+        post{
+            always{
+                dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+            }
+        }
+        }
         stage('Build Image'){
             steps {
                 sh "docker build -t 192.168.205.130:5000/repository/hassan/java:${BUILD_NUMBER} ."
