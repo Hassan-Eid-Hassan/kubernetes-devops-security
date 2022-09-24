@@ -1,8 +1,5 @@
 pipeline {
     agent { label 'test' }
-    tools {
-        jdk 'jdk8'
-    }
     stages {
         stage('Build JAR') {
             steps {
