@@ -21,18 +21,18 @@ pipeline {
               sh "mvn org.pitest:pitest-maven:mutationCoverage" 
                  } 
         }
-        stage('SonarQube - SAST') {
-             steps {
-                 withSonarQubeEnv('SonerQube'){
-                  sh "mvn clean verify sonar:sonar -Dsonar.projectKey=Num-sec -Dsonar.host.url=http://192.168.205.133:32644"
-                 }
-                timeout(time: 2, unit: 'MINUTES'){
-                script{
-                   waitForQualityGate abortPipeline: true
-                     }
-                   }
-               }
-         }
+       // stage('SonarQube - SAST') {
+        //     steps {
+         //        withSonarQubeEnv('SonerQube'){
+          //        sh "mvn clean verify sonar:sonar -Dsonar.projectKey=Num-sec -Dsonar.host.url=http://192.168.205.133:32644"
+           //      }
+            //    timeout(time: 2, unit: 'MINUTES'){
+             //   script{
+              //     waitForQualityGate abortPipeline: true
+               //      }
+                //   }
+         //      }
+        // }
         stage('Vulnerability Scan Docker'){
             steps{
                 sh "mvn dependency-check:check"
