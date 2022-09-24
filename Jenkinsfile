@@ -14,26 +14,15 @@ pipeline {
                  archiveArtifacts artifacts: 'target/*.jar'
             }
         }
-        stage('Test') {
+        stage('Unit Tests - JUnit and Jacoco') {
             steps {
                   sh "mvn test"
             }
-            post { 
-                always { 
-                    junit 'target/surefire-reports/*.xml'
-                    jacoco execPattern: 'target/jacoco.exec'
-                        }
-                 }
         }
         stage('Mutation Tests PIT') {
             steps{ 
               sh "mvn org.pitest:pitest-maven:mutationCoverage" 
                  } 
-            post { 
-                always { 
-                    pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml' 
-                        }
-                    }   
         }
       //  stage('SonarQube - SAST') {
        //     steps {
@@ -51,35 +40,25 @@ pipeline {
             steps{
                 sh "mvn dependency-check:check"
             }
-        post{
-            always{
-                dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
-            }
         }
-        }
-        stage('Build Image'){
+        stage('Docker image build and push'){
             steps {
                 sh "docker build -t 192.168.205.130:5000/repository/hassan/java:${BUILD_NUMBER} ."
                 sh "docker push 192.168.205.130:5000/repository/hassan/java:${BUILD_NUMBER}"
             }
-                
         }
-        //stage('Scan') {
-          //  steps {
-          //      sh "docker scan hassaneid/java:${BUILD_NUMBER} >> scanresult.txt | set +e"
-        //
-        //    }
-        //}
-       // stage('Publish') {
-         //   steps {
-           //    sh 'docker push hassaneid/java:${BUILD_NUMBER}'
-           // }
-       // }
-       // stage('Deploy'){
-         //   steps {
-           //     sh """ ssh -i /home/ec2-user/eand.pem ec2-user@52.91.25.97 'sudo kubectl set image deployment java-deployment java=hassaneid/java:${BUILD_NUMBER}' """
-           // } 
-       // }
-
-    }
+        stage('Kubernetes Deployment - DEV') {
+            steps {
+            sh "sed -i 's#REPLACE_ME#192.168.205.130:5000/repository/hassan/java:${BUILD_NUMBER}#g' k8s_deployment_service.yaml"
+            sh "kubectl apply -f k8s_deployment_service.yaml"
+            }
+        }
+   }
+    post{
+        always{
+            junit 'target/surefire-reports/*.xml'
+            jacoco execPattern: 'target/jacoco.exec'
+            pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
+            dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+        }
 }
