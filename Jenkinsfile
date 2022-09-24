@@ -49,8 +49,12 @@ pipeline {
         }
        stage('Kubernetes Deployment - DEV') {
             steps {
+              withKubeConfig([credentialsId: 'kubernetes-config']) {
+                sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
+                sh 'chmod u+x ./kubectl'  
                 sh "sed -i 's#REPLACE_ME#192.168.205.130:5000/repository/hassan/java:${BUILD_NUMBER}#g' k8s_deployment_service.yaml"
-                sh "kubectl apply -f k8s_deployment_service.yaml"
+                sh "./kubectl apply -f k8s_deployment_service.yaml"
+              }
             }
         }
    }
