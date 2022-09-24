@@ -47,14 +47,14 @@ pipeline {
                 sh "docker push 192.168.205.130:5000/repository/hassan/java:${BUILD_NUMBER}"
             }
         }
-        stage('Kubernetes Deployment - DEV') {
-            steps {
-               kubeconfig(credentialsId: 'kubeconfig', serverUrl: 'https://192.168.205.133:6443') {
-                sh "sed -i 's#REPLACE_ME#192.168.205.130:5000/repository/hassan/java:${BUILD_NUMBER}#g' k8s_deployment_service.yaml"
-                sh "kubectl apply -f k8s_deployment_service.yaml"
-               }
-            }
-        }
+       // stage('Kubernetes Deployment - DEV') {
+         //   steps {
+           //    kubeconfig(credentialsId: 'kubeconfig', serverUrl: 'https://192.168.205.133:6443') {
+             //   sh "sed -i 's#REPLACE_ME#192.168.205.130:5000/repository/hassan/java:${BUILD_NUMBER}#g' k8s_deployment_service.yaml"
+               // sh "kubectl apply -f k8s_deployment_service.yaml"
+              // }
+           // }
+       // }
    }
     post{
         always{
