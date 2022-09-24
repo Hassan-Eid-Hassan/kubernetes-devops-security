@@ -36,11 +36,11 @@ pipeline {
     //         }
          //   }
        // }
-        stage('Vulnerability Scan Docker'){
-            steps{
-                sh "mvn dependency-check:check"
-            }
-        }
+       // stage('Vulnerability Scan Docker'){
+         //   steps{
+          //      sh "mvn dependency-check:check"
+           // }
+        //}
         stage('Docker image build and push'){
             steps {
                 sh "docker build -t 192.168.205.130:5000/repository/hassan/java:${BUILD_NUMBER} ."
@@ -61,7 +61,7 @@ pipeline {
             junit 'target/surefire-reports/*.xml'
             jacoco execPattern: 'target/jacoco.exec'
             pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
-            dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+            //dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
         }
     }
 }
